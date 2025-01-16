@@ -6,44 +6,44 @@ public class Main {
 	
 	public static void main(String[] args)throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
 		int N = Integer.parseInt(br.readLine());
+        	int left = 0, max = 0, cnt = 0;
 		int[] fruits = new int[N];
-		int[] type = new int[10];
-		int cnt = 0, max = 0;
+	        HashMap<Integer, Integer> map = new HashMap<>();
 		
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i = 0; i<N; i++) {
 			fruits[i] = Integer.parseInt(st.nextToken());
-			if(type[fruits[i]] == 0) {
-				cnt += 1;
-			}
-			type[fruits[i]] += 1;
 		}
 		
-		if(cnt <= 2) System.out.println(N);
-		else {
-			// a, b 경우의 수 구하기
-			for(int f1 = 1; f1 < 9; f1++) {
-				for(int f2 = f1+1; f2 <= 9; f2++) {
-					int cur = 0;
-					boolean continuous = false;
-					for(int i = 0; i<N; i++) {
-						if(fruits[i] == f1 || fruits[i] == f2) {
-							cur += 1;
-							continuous = true;
-						}else {
-							if(continuous) {
-								continuous = false;
-                                max = Math.max(max, cur);
-								cur = 0;
-							}
-						}
-					}
-					max = Math.max(max, cur);
+		for(int right = 0; right<N; right++) {
+			map.put(fruits[right], map.getOrDefault(fruits[right], 0) + 1);
+			
+			if(map.size() > 2) {
+				max = Math.max(max, cnt);
+				
+				// * left 갱신 작업
+				// 1. left값이 얼마나 이어져있는지 확인
+				// 2. 그 수만큼 left ++, cnt --, map 내 값 갱신
+				int remove = fruits[left]; // 지울 숫자 
+				int rCnt = 0; // 지울 숫자의 연결된 길이
+				for(int l = left; l < right; l++) {
+					if(fruits[l] == remove) rCnt += 1;
+					else break;
 				}
+				
+				if(map.get(fruits[left]) == rCnt) {
+					map.remove(remove);
+				}else {
+					map.replace(remove, map.get(remove) - rCnt);
+				}
+				cnt -= rCnt;
+				left += rCnt;
 			}
-			System.out.println(max);
+			cnt += 1;
 		}
+		
+		max = Math.max(max, cnt);
+		System.out.println(max);
 	}
 }
