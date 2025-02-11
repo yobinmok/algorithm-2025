@@ -1,70 +1,69 @@
-import java.io.BufferedWriter;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.StringTokenizer;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-	static BufferedReader br;
-
-	public static void main(String[] args) throws Exception {
-		br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		int T = Integer.parseInt(br.readLine());
-		for (int i = 0; i < T; i++) {
-			bw.write(result() + "\n");
+	
+	static class Node{
+		int u, v, cost;
+		Node(int u, int v, int cost){
+			this.u = u;
+			this.v = v;
+			this.cost = cost;
 		}
-		bw.flush();
-		bw.close();
-		br.close();
 	}
-
-	public static String result() throws Exception {        
-		return ckMinusCycle() ? "YES" : "NO";    
+	
+	static int N, M, W, edge, distance[], INF = Integer.MAX_VALUE; 
+	static ArrayList<Node> graph;
+	
+	public static void main(String[] args) throws Exception{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		
+		int TC = Integer.parseInt(br.readLine());
+		for(int t = 0; t<TC; t++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			
+			N = Integer.parseInt(st.nextToken());
+			M = Integer.parseInt(st.nextToken());
+			W = Integer.parseInt(st.nextToken());
+			
+			// 간선 그래프
+			graph = new ArrayList<>();
+			 for (int i = 0; i < M + W; i++) {            
+				 st = new StringTokenizer(br.readLine());            
+				 int S = Integer.parseInt(st.nextToken())-1;            
+				 int E = Integer.parseInt(st.nextToken())-1;            
+				 int T = Integer.parseInt(st.nextToken());                        
+				 if (i >= M) {                
+					 graph.add(new Node(S, E, -T));             
+				 } else {                
+					 graph.add(new Node(S, E, T));                 
+					 graph.add(new Node(E, S, T));             
+				 }                    
+			 }
+			
+			distance = new int[N];
+			
+			sb.append(bellman() ? "YES" : "NO").append("\n");
+		}
+		System.out.println(sb);
 	}
-
-	public static boolean ckMinusCycle() throws Exception {        
-		StringTokenizer st = new StringTokenizer(br.readLine(), " ");        
-		int N = Integer.parseInt(st.nextToken()); //지점의 수        
-		int M = Integer.parseInt(st.nextToken()); // 도로의 개수        
-		int W = Integer.parseInt(st.nextToken()); // 웜홀의 개수         
-		ArrayList<Edge> edge = new ArrayList<>();                
-		for (int i = 0; i < M + W; i++) {            
-			st = new StringTokenizer(br.readLine(), " ");            
-			int S = Integer.parseInt(st.nextToken());            
-			int E = Integer.parseInt(st.nextToken());            
-			int T = Integer.parseInt(st.nextToken());                        
-			if (i >= M) {                
-				edge.add(new Edge(S, E, -T));             
-				} else {                
-					edge.add(new Edge(S, E, T));                 
-					edge.add(new Edge(E, S, T));             
-					}                    
-			}         
-		int[] times = new int[N + 1];         
-		boolean ck = false;         
-		for (int i = 1; i < N + 1; i++) {            
-			for (int j = 0; j < edge.size(); j++) {                
-				Edge cur = edge.get(j);                                
-				int time = times[cur.from] + cur.time;                
-				if (times[cur.to] > time) {                    
-					times[cur.to] = time;                                       
-					if (i == N) {                        
-						ck = true;                    
-						}                
-					}            
-				}        
-			}         
-		return ck;    }
-	} 
-
-class Edge {    
-	int from, to, time;    
-	Edge(int from, int to, int time) {        
-		this.from = from;        
-		this.to = to;        
-		this.time = time;    
+	
+	static boolean bellman() { // 음수사이클이 있으면 true		
+		for(int i = 0; i<N; i++) { // N-1번 동안 최단거리 초기화 작업
+			for(Node road: graph) { // 모든 간선 확인
+				if(distance[road.u] == INF) continue; // 아직 이어진 길이 없음
+				
+				// next까지의 거리 > 현재 간선을 거쳐갈 때의 거리 -> 짧은 거리로 갱신
+				if(distance[road.v] > distance[road.u] + road.cost) {
+					distance[road.v] = distance[road.u] + road.cost;
+					if(i == N-1) { // 음수 사이클 존재
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
 	}
 }
-	
