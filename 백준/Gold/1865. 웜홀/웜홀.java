@@ -52,8 +52,6 @@ public class Main {
 	static boolean bellman() { // 음수사이클이 있으면 true		
 		for(int i = 0; i<N; i++) { // N-1번 동안 최단거리 초기화 작업
 			for(Node road: graph) { // 모든 간선 확인
-				if(distance[road.u] == INF) continue; // 아직 이어진 길이 없음
-				
 				// next까지의 거리 > 현재 간선을 거쳐갈 때의 거리 -> 짧은 거리로 갱신
 				if(distance[road.v] > distance[road.u] + road.cost) {
 					distance[road.v] = distance[road.u] + road.cost;
