@@ -8,32 +8,26 @@ public class Main {
 		
 		int n = Integer.parseInt(br.readLine());
 		
-		Set<Integer> height = new HashSet<>();
-		int ans = 0, prev = 0;
-		boolean[] isConnected = new boolean[500001];
-		Arrays.fill(isConnected, true);
+		// 높이와 높이별 연결여부에 따라 처리
+		// 이전 높이가 자신보다 낮으면 그 층보다 높은층들은 연결여부 false
+		int ans = 0, prev = 0, max = 0;
+		boolean[] visited = new boolean[500001];
+		visited[0] = true;
 		
 		for(int i = 0; i<n; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int x = Integer.parseInt(st.nextToken()); // 무조건 오름차순으로 입력됨
 			int y = Integer.parseInt(st.nextToken()); // 연결여부 확인, 같은 건물인지 확인
 			
-			if(y == 0) { // 건물이 없는 경우
-				height.clear();
-				continue;
-			}
+			max = Math.max(y, max);
 			
 			if(prev > y) {
-				for(int t: height) {
-					if(t > y)
-						isConnected[t] = false;
-				}
+				Arrays.fill(visited, y+1, max+1, false);
 			}
 			
-			if(!height.contains(y) || !isConnected[y]) {
+			if(!visited[y]) { // 해당 높이 건물을 세지 않았다면
 				ans += 1;
-				height.add(y);
-				isConnected[y] = true;
+				visited[y] = true;
 			}
 			
 			prev = y;
