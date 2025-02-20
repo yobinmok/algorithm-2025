@@ -1,0 +1,10 @@
+-- 코드를 작성해주세요
+
+# 더 이상 업그레이드 할 수 없는 아이템을 구해라
+# = 자신을 부모로 갖는 아이템이 없는 경우
+
+SELECT I.ITEM_ID, ITEM_NAME, RARITY
+FROM ITEM_INFO I LEFT JOIN ITEM_TREE T ON I.ITEM_ID = T.PARENT_ITEM_ID
+WHERE PARENT_ITEM_ID IS NULL
+ORDER BY I.ITEM_ID DESC;
+
