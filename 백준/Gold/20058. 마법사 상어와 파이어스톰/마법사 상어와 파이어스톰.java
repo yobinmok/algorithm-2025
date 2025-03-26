@@ -28,7 +28,7 @@ public class Main{
 				board[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
+
 		st = new StringTokenizer(br.readLine());
 		for(int i = 0; i<Q; i++) {
 			int L = Integer.parseInt(st.nextToken());
@@ -107,58 +107,19 @@ public class Main{
 	}
 	
 	static void turn(int r, int c, int L) {
-//		2^(L-1)번 돔
-		int level = (int)Math.pow(2, L-1);
 		int size = (int)Math.pow(2, L);
-		for(int s = 0; s<level; s++) {
-			int[][] org = new int[4][size];
-			int cr = r, cc = c;
-			
-			// 값 복사
-			for(int i = 0; i<size; i++) { //상
-				org[0][i] = board[cr][cc+i];
+		int[][] temp = new int[size][size];
+		for(int i = 0; i<size; i++) {
+			for(int j = 0; j<size; j++) {
+				temp[j][size-i-1] = board[r+i][c+j];
 			}
-			cc += size-1;
-			
-			for(int i = 0; i<size; i++) { //우
-				org[1][i] = board[cr+i][cc];
+		}
+		
+		for(int i = 0; i<size; i++) {
+			for(int j = 0; j<size; j++) {
+				board[r+i][c+j] = temp[i][j];
 			}
-			cr += size-1;
-			
-			for(int i = 0; i<size; i++) { //하
-				org[2][i] = board[cr][cc-i];
-			}
-			cc -= size-1;
-			
-			for(int i = 0; i<size; i++) { //좌
-				org[3][i] = board[cr-i][cc];
-			}
-			cr -= size-1;
-			
-			// 값 넣기
-			for(int i = 0; i<size; i++) {
-				board[cr][cc+i] = org[3][i];
-			}
-			cc += size-1;
-			
-			for(int i = 0; i<size; i++) {
-				board[cr+i][cc] = org[0][i]; 
-			}
-			cr += size-1;
-			
-			for(int i = 0; i<size; i++) { 
-				board[cr][cc-i] = org[1][i];
-			}
-			cc -= size-1;
-			
-			for(int i = 0; i<size; i++) { 
-				board[cr-i][cc] = org[2][i];
-			}
-			cr -= size-1;
-			
-			r += 1;
-			c += 1;
-			size -= 2;
 		}
 	}
+	
 }
