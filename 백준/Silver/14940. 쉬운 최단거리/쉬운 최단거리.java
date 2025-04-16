@@ -9,7 +9,8 @@ public class Main{
 	public static void main(String[] args)throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+		StringBuilder sb = new StringBuilder();
+
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		board = new int[N][M];
@@ -36,11 +37,12 @@ public class Main{
 				int n = dis[i][j];
 				if(n == 0) n = -1;
 				else if(n == -1) n = 0;
-				
-				System.out.print(n + " ");
+				sb.append(n + " ");
 			}
-			System.out.println();
+			sb.append("\n");
 		}
+
+		System.out.println(sb);
 	}
 	
 	static void bfs(int[] start) {
@@ -63,7 +65,7 @@ public class Main{
 					if(nr < 0 || nr >= N || nc < 0 || nc >= M || 
 							dis[nr][nc] != 0) continue;
 					
-					dis[nr][nc] = depth + 1;
+					dis[nr][nc] = depth+1;
 					que.add(new int[] {nr, nc});
 				}
 			}
