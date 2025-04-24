@@ -1,42 +1,31 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class Main{
 	
-	public static void main(String[] args) throws IOException {
+	/*
+	 * 레이저 신호는 수평 직선의 왼쪽 방향으로 발사
+	 * 가장 먼저 만나는 단 하나의 탑에서만 수신 가능
+	 * 
+	 * 스택 사용
+	 * */
+	public static void main(String[] args)throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
 		
-		int N = Integer.parseInt(br.readLine()); // <= 500,000
-		st = new StringTokenizer(br.readLine());
-		
+		int N = Integer.parseInt(br.readLine());
+		StringTokenizer st = new StringTokenizer(br.readLine());
 		int[] top = new int[N];
 		int[] ans = new int[N];
-		
 		for(int i = 0; i<N; i++) {
 			top[i] = Integer.parseInt(st.nextToken());
 		}
 		
 		Stack<Integer> stk = new Stack<>();
-		
-		stk.add(0);
-		for (int i = 1; i < N; i++) {
-			while(true) {
-				if(stk.isEmpty()) {
-					stk.push(i);
-					break;
-				}else {
-					// 스택의 top > 현재위치
-					if(top[stk.peek()] > top[i]) {
-						ans[i] = stk.peek()+1;
-						stk.push(i);
-						break;
-					}else {
-						// 스택의 top < 현재위치
-						stk.pop();
-					}
-				}
+		for(int i = N-1; i>=0; i--) {
+			while(!stk.isEmpty() && top[stk.peek()] < top[i]) {
+				ans[stk.pop()] = i+1;
 			}
+			stk.push(i);
 		}
 		
 		StringBuilder sb = new StringBuilder();
