@@ -27,9 +27,9 @@ class Solution {
                 else break;
             }
             
-            if(end == size && start == size){
-                break;
-            }
+            // if(end == size && start == size){
+            //     break;
+            // }
             
             if(sum == k){
                 if((end - start < min) || (end-start == min && answer[0] > start)){
