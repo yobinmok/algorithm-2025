@@ -23,12 +23,13 @@ class Solution {
         
         for(int pick: picks) sum += pick;
         
-        recur(0, 0, 0, 0, "");
+        recur(0, 0, 0, "");
         return min;
     }
     
-    // 현재 사용한 곡괭이 인덱스, 사용한 곡괭이 수, 캔 광물 개수, 피로도
-    public void recur(int idx, int pick, int mineral, int tired, String s){
+    // 사용한 곡괭이 수, 캔 광물 개수, 피로도
+    public void recur(int pick, int mineral, int tired, String s){
+        if(tired >= min) return;
         if(mineral == minerals.length){ // 모든 광물을 캔 경우
             // System.out.println("1: " + idx + " " + pick + " " + mineral + " " + tired + " => " + s);
             min = Math.min(min, tired);
@@ -58,7 +59,7 @@ class Solution {
                     tempTired += fatigue[i][2];
                 }
             }
-            recur(i, pick+1, mineral+m, tempTired, s + " " + i);
+            recur(pick+1, mineral+m, tempTired, s + " " + i);
             picks[i] += 1;
         }
     }
