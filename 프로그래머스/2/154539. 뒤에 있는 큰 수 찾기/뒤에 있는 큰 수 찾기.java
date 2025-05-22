@@ -2,11 +2,10 @@ import java.util.*;
 
 class Solution {
     /*
-        뒷큰수: 자신보다 뒤에 있는 숫자 중 자신보다 크면서 가장 가까이 있는 수        
+        뒤에 붙은 수 중 자신보다 크면서 가장 가까이 있는 수
+        
     */
-    
     public int[] solution(int[] numbers) {
-        int cur = 0;
         int size = numbers.length;
         int[] answer = new int[size];
         Arrays.fill(answer, -1);
