@@ -16,13 +16,15 @@ class Solution {
             map.put(tangerine[i], map.getOrDefault(tangerine[i], 0)+1);
         }
         
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        List<Integer> count = new ArrayList<>();
         for(int key: map.keySet()){
-            pq.add(map.get(key));
+            count.add(map.get(key));
         }
+        count.sort(Comparator.reverseOrder());
         
-        while(sum < k){
-            sum += pq.poll();
+        for(int c: count){
+            if(sum >= k) break;
+            sum += c;
             answer += 1;
         }
         
