@@ -39,7 +39,7 @@ public class Main{
 			for(int j = i+1; j<=N; j++) {
 				if(wood[i][1] >= wood[j][0]) {
 					union(wood[i][3], wood[j][3]);
-				}
+				}else break;
 			}
 		}
 		
