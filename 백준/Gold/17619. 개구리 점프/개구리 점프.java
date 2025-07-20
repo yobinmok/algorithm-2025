@@ -70,7 +70,7 @@ public class Main{
 	
 	static int find(int n) {
 		if(parent[n] == n) return n;
-		return parent[n];
+		return parent[n] = find(parent[n]);
 	}
 	
 }
